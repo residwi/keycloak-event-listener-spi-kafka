@@ -1,5 +1,7 @@
 package com.github.residwi.plugin.keycloak;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventType;
@@ -9,8 +11,13 @@ public class KafkaEventListenerProvider implements EventListenerProvider {
 
     @Override
     public void onEvent(Event event) {
+        ObjectMapper objectMapper = new ObjectMapper();
         if (event.getType().equals(EventType.LOGIN)) {
-            KafkaMessageProducer.publishEvent("loginEvent", event.getUserId());
+            try {
+                KafkaMessageProducer.publishEvent("loginEvent", objectMapper.writeValueAsString(event));
+            } catch (JsonProcessingException exception) {
+                exception.printStackTrace();
+            }
         }
     }
 
