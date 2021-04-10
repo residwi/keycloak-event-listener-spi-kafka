@@ -11,14 +11,8 @@ public class KafkaEventListenerProvider implements EventListenerProvider {
 
     @Override
     public void onEvent(Event event) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        if (event.getType().equals(EventType.LOGIN)) {
-            try {
-                KafkaMessageProducer.publishEvent("loginEvent", objectMapper.writeValueAsString(event));
-            } catch (JsonProcessingException exception) {
-                exception.printStackTrace();
-            }
-        }
+        publishEvent("registerEvent", EventType.REGISTER, event);
+//        publishEvent("loginEvent", EventType.LOGIN, event);
     }
 
     @Override
@@ -29,5 +23,17 @@ public class KafkaEventListenerProvider implements EventListenerProvider {
     @Override
     public void close() {
         // default implementation ignored
+    }
+
+    private void publishEvent(String topic, EventType eventType, Event event) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        if (event.getType().equals(eventType)) {
+            try {
+                KafkaMessageProducer.publishEvent(topic, objectMapper.writeValueAsString(event));
+            } catch (JsonProcessingException exception) {
+                exception.printStackTrace();
+            }
+        }
     }
 }
