@@ -12,7 +12,7 @@ import java.util.Properties;
 public class KafkaMessageProducer {
 
     private static final Logger LOG = Logger.getLogger(KafkaMessageProducer.class);
-    private static final String KAFKA_SERVER = "kafka.kafka.svc.cluster.local:9092";
+    private static final String KAFKA_SERVER = "kafka-0.kafka-headless.kafka.svc.cluster.local:9092,kafka-1.kafka-headless.kafka.svc.cluster.local:9092";
 
     private KafkaMessageProducer() {
     }
