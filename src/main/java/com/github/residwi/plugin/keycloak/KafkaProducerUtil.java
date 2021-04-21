@@ -9,12 +9,12 @@ import org.jboss.logging.Logger;
 
 import java.util.Properties;
 
-public class KafkaMessageProducer {
+public class KafkaProducerUtil {
 
-    private static final Logger LOG = Logger.getLogger(KafkaMessageProducer.class);
+    private static final Logger LOG = Logger.getLogger(KafkaProducerUtil.class);
     private static final String KAFKA_SERVER = "kafka-0.kafka-headless.kafka.svc.cluster.local:9092,kafka-1.kafka-headless.kafka.svc.cluster.local:9092";
 
-    private KafkaMessageProducer() {
+    private KafkaProducerUtil() {
     }
 
     public static void publishEvent(String topic, String value) {
@@ -35,7 +35,7 @@ public class KafkaMessageProducer {
         producer.close();
     }
 
-    public static Properties getProperties() {
+    private static Properties getProperties() {
         Properties properties = new Properties();
         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_SERVER);
         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
