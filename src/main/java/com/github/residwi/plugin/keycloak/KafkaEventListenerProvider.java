@@ -13,9 +13,8 @@ public class KafkaEventListenerProvider implements EventListenerProvider {
 
         if (event.getType().equals(EventType.REGISTER)) {
             eventProducer.sendOnTopic("registerEvent");
-            eventProducer.sendOnTopic("verifyEmailEvent"); /* user signup from identity provider */
         } else if (event.getType().equals(EventType.VERIFY_EMAIL)) {
-            eventProducer.sendOnTopic("verifyEmailEvent"); /* user signup from manual/form register */
+            eventProducer.sendOnTopic("verifyEmailEvent");
         }
     }
 
