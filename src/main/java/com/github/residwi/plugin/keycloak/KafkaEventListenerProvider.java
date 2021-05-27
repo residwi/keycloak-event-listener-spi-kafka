@@ -4,6 +4,7 @@ import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventType;
 import org.keycloak.events.admin.AdminEvent;
+import org.keycloak.events.admin.ResourceType;
 
 public class KafkaEventListenerProvider implements EventListenerProvider {
 
@@ -20,11 +21,11 @@ public class KafkaEventListenerProvider implements EventListenerProvider {
 
     @Override
     public void onEvent(AdminEvent adminEvent, boolean b) {
-//        AdminEventProducer eventProducer = new AdminEventProducer(adminEvent);
-//
-//        if (adminEvent.getOperationType().equals(OperationType.DELETE) && adminEvent.getResourceType().equals(ResourceType.USER)) {
-//            eventProducer.sendOnTopic("deleteUserAdminEvent");
-//        }
+        AdminEventProducer eventProducer = new AdminEventProducer(adminEvent);
+
+        if (adminEvent.getResourceType().equals(ResourceType.USER)) {
+            eventProducer.sendOnTopic("userKeycloakEvent");
+        }
     }
 
     @Override
