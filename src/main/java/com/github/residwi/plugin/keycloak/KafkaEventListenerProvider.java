@@ -1,5 +1,10 @@
 package com.github.residwi.plugin.keycloak;
 
+import com.github.residwi.plugin.keycloak.producer.impl.AdminEventProducer;
+import com.github.residwi.plugin.keycloak.producer.impl.EventProducer;
+import com.github.residwi.plugin.keycloak.producer.model.AdminEventMessage;
+import com.github.residwi.plugin.keycloak.producer.model.EventMessage;
+import com.github.residwi.plugin.keycloak.producer.Producer;
 import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventType;
@@ -10,21 +15,23 @@ public class KafkaEventListenerProvider implements EventListenerProvider {
 
     @Override
     public void onEvent(Event event) {
-        EventProducer eventProducer = new EventProducer(event);
+        EventMessage message = EventMessage.create(event);
+        Producer producer = new EventProducer(message);
 
         if (event.getType().equals(EventType.REGISTER)) {
-            eventProducer.sendOnTopic("registerEvent");
+            producer.sendOnTopic("registerEvent");
         } else if (event.getType().equals(EventType.VERIFY_EMAIL)) {
-            eventProducer.sendOnTopic("verifyEmailEvent");
+            producer.sendOnTopic("verifyEmailEvent");
         }
     }
 
     @Override
     public void onEvent(AdminEvent adminEvent, boolean b) {
-        AdminEventProducer eventProducer = new AdminEventProducer(adminEvent);
+        AdminEventMessage message = AdminEventMessage.create(adminEvent);
+        Producer producer = new AdminEventProducer(message);
 
         if (adminEvent.getResourceType().equals(ResourceType.USER)) {
-            eventProducer.sendOnTopic("userKeycloakEvent");
+            producer.sendOnTopic("userKeycloakEvent");
         }
     }
 

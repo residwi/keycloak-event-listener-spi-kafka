@@ -1,4 +1,4 @@
-package com.github.residwi.plugin.keycloak;
+package com.github.residwi.plugin.keycloak.producer.util;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
